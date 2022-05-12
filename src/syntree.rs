@@ -84,7 +84,7 @@ impl<'a, T> Syntree<T> {
         if self.id == *id {
             Some(self)
         } else {
-            for mut child in &self.children {
+            for child in & mut self.children {
                 if let Some(result) = child.seek_node_mut(id) {
                     return Some(result);
                 }
