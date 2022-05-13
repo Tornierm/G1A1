@@ -1,4 +1,5 @@
 use std::fmt::{Display, Formatter};
+use std::process::exit;
 
 #[derive(Clone, Copy, Debug, Default, PartialEq)]
 pub struct ID(usize);
@@ -14,15 +15,37 @@ pub struct Syntree<T> {
 // Hint: Start with seek_node_mut
 impl<'a, T> Syntree<T> {
     pub fn new(value: T, id: ID) -> Syntree<T> {
-        todo!()
+        let tree: Syntree<T> = Syntree {
+            id,
+            value,
+            children: Vec::new(),
+        };
+        tree
     }
 
+
     pub fn push_node(&mut self, parent_id: ID, new_node: Syntree<T>) -> Result<(), String> {
-        todo!()
+        let parent = self.seek_node_mut(&parent_id);
+        if parent.is_none() {
+            Err("ID not found".to_owned())
+        }
+        else {
+            let parent_unwrapped = parent.unwrap();
+            parent_unwrapped.children.push(new_node);
+            Ok(())
+        }
     }
 
     pub fn prepend_node(&mut self, parent_id: ID, new_node: Syntree<T>) -> Result<(), String> {
-        todo!()
+        let parent : Option<&mut Syntree<T>> = self.seek_node_mut(&parent_id);
+        if parent.is_none() {
+            Err("ID not found".to_owned())
+        }
+        else {
+            let parent_unwrapped = parent.unwrap();
+            parent_unwrapped.children.insert(0,new_node);
+            Ok(())
+        }
     }
 
     pub fn insert_node(
@@ -31,7 +54,15 @@ impl<'a, T> Syntree<T> {
         index: usize,
         new_node: Syntree<T>,
     ) -> Result<(), String> {
-        todo!()
+        let parent = self.seek_node_mut(&parent_id);
+        if parent.is_none() {
+            Err("ID not found".to_owned())
+        }
+        else {
+            let parent_unwrapped = parent.unwrap();
+            parent_unwrapped.children.insert(index,new_node);
+            Ok(())
+        }
     }
 
     // Anmerkung: `'a` Is ein Lebenszeit angabe für die Referenzen
@@ -50,7 +81,16 @@ impl<'a, T> Syntree<T> {
     }
 
     pub fn seek_node_mut(&'a mut self, id: &ID) -> Option<&'a mut Syntree<T>> {
-        todo!()
+        if self.id == *id {
+            Some(self)
+        } else {
+            for child in & mut self.children {
+                if let Some(result) = child.seek_node_mut(id) {
+                    return Some(result);
+                }
+            }
+            None
+        }
     }
 }
 
