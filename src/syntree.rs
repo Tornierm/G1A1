@@ -14,19 +14,15 @@ pub struct Syntree<T> {
 // Hint: Start with seek_node_mut
 impl<'a, T> Syntree<T> {
     pub fn new(value: T, id: ID) -> Syntree<T> {
-        Syntree{
-            id,
-            value,
-            children: Vec::new(),
-        }
+        todo!()
     }
 
     pub fn push_node(&mut self, parent_id: ID, new_node: Syntree<T>) -> Result<(), String> {
-        self.push(parent_id);
+        todo!()
     }
 
     pub fn prepend_node(&mut self, parent_id: ID, new_node: Syntree<T>) -> Result<(), String> {
-        self.insert_node(parent_id, 0, new_node);
+        todo!()
     }
 
     pub fn insert_node(
@@ -35,10 +31,7 @@ impl<'a, T> Syntree<T> {
         index: usize,
         new_node: Syntree<T>,
     ) -> Result<(), String> {
-        match self.seek_node_mut(parent_id){
-            None => Err(String::from("Elternknoten werden nicht gefunden."));
-            Some => Ok();
-        }
+        todo!()
     }
 
     // Anmerkung: `'a` Is ein Lebenszeit angabe für die Referenzen
@@ -57,16 +50,7 @@ impl<'a, T> Syntree<T> {
     }
 
     pub fn seek_node_mut(&'a mut self, id: &ID) -> Option<&'a mut Syntree<T>> {
-        if self.id == *id {
-            Some(self)
-        } else {
-            for child in &mut self.children {
-                if let Some(result) = child.seek_node_mut(id) {
-                    return Some(result);
-                }
-            }
-            None
-        }
+        todo!()
     }
 }
 
